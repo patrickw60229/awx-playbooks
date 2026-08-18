@@ -23,4 +23,4 @@
 
     - name: 4. 如果有改名或加入網域，自動重新開機並等待連線恢復
       win_reboot:
-        when: rename_result.reboot_required or domain_result.reboot_required
+      when: rename_result.reboot_required or domain_result.reboot_required
