@@ -5,8 +5,6 @@
     - name: 1. 更改電腦名稱為 DC201602-test
       win_hostname:
         name: "DC201602-test"
-        domain_admin_user: "epdi\\Administrator"
-        domain_admin_password: "Paa04378!!" # 請記得改成您的密碼
       register: rename_result
 
     - name: 2. 將 DNS 伺服器指向 DC
