@@ -1,0 +1,28 @@
+---
+- name: 企業新伺服器一鍵初始化 (基礎架構部署)
+  hosts: all
+  tasks:
+    - name: 1. 更改電腦名稱為 DC201602-test
+      win_hostname:
+        name: "DC201602-test"
+        domain_admin_user: "epdi\\Administrator"
+        domain_admin_password: "您的網域密碼" # 請記得改成您的密碼
+      register: rename_result
+
+    - name: 2. 將 DNS 伺服器指向 DC
+      win_dns_client:
+        adapter_names: '*'
+        ipv4_addresses:
+          - '10.30.10.60'
+
+    - name: 3. 加入 Active Directory 網域
+      microsoft.ad.membership:
+        dns_domain_name: "epdi.xyz"
+        domain_admin_user: "epdi\\Administrator"
+        domain_admin_password: "您的網域密碼" # 請記得改成您的密碼
+        state: domain
+      register: domain_result
+
+    - name: 4. 如果有改名或加入網域，自動重新開機並等待連線恢復
+      win_reboot:
+        when: rename_result.reboot_required or domain_result.reboot_required
