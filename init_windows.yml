@@ -2,9 +2,14 @@
 - name: 企業新伺服器一鍵初始化 (基礎架構部署)
   hosts: all
   tasks:
-    - name: 1. 更改電腦名稱為 DC201602-test
-      win_hostname:
+     - name: 1. 更改電腦名稱為 DC201602-test
+       win_hostname:
         name: "DC201602-test"
+       vars:
+        ansible_become: yes
+        ansible_become_method: runas
+        ansible_become_user: "epdi\\Administrator"
+        ansible_become_password: "Paa04378!!" # 請務必替換成真實密碼
       register: rename_result
 
     - name: 2. 將 DNS 伺服器指向 DC
